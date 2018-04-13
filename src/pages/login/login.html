@@ -1,0 +1,74 @@
+<!--
+  Generated template for the LoginPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Login</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <form [formGroup]="loginForm" (ngSubmit)="doLogin()">
+
+    <ion-list>
+
+      <ion-item>
+        <ion-label floating>Email</ion-label>
+        <ion-input type="email" formControlName="email"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Password</ion-label>
+        <ion-input type="password" formControlName="password"></ion-input>
+      </ion-item>
+
+    </ion-list>
+
+    <div padding>
+      <button ion-button color="primary" block type="submit" [disabled]="!loginForm.valid">Sign In</button>
+    </div>
+
+  </form>
+
+  <ion-grid text-center>
+    <ion-row>
+      <ion-col>
+        <a href="#" class="login-optons" (click)="navForget()">Forget Password</a>
+      </ion-col>
+      <ion-col>
+        <a href="#" class="login-optons" (click)="navRegister()">Register</a>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <div padding>
+
+    <button ion-button color="google" block icon-left margin-bottom (click)="doSocialLogin('google')">
+      <ion-icon ios="logo-google" md="logo-google"></ion-icon>
+      Login with Google
+    </button>
+
+    <button ion-button color="facebook" block icon-left margin-bottom (click)="doSocialLogin('facebook')">
+      <ion-icon ios="logo-facebook" md="logo-facebook"></ion-icon>
+      Login with Facebook
+    </button>
+
+    <button ion-button color="twitter" block icon-left margin-bottom (click)="doSocialLogin('twitter')">
+      <ion-icon ios="logo-twitter" md="logo-twitter"></ion-icon>
+      Login with Twitter
+    </button>
+
+    <button ion-button color="github" block icon-left (click)="doSocialLogin('github')">
+      <ion-icon ios="logo-github" md="logo-github"></ion-icon>
+      Login with Twitter
+    </button>
+
+  </div>
+
+</ion-content>
