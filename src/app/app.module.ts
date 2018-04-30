@@ -18,8 +18,11 @@ import { RegisterPage } from '../pages/register/register';
 import { UtilsProvider } from '../providers/utils/utils';
 import { ForgetPage } from '../pages/forget/forget';
 import { MessageService } from '../services/message.service';
+import { SliceService} from '../services/slice.service';
 import { StoryService} from '../services/story.service';
 
+import { ReadPage } from '../pages/read/read';
+import { SafeHtmlPipe } from '../pipes/safe-html.pipe';
 
 @NgModule({
   declarations: [
@@ -27,7 +30,9 @@ import { StoryService} from '../services/story.service';
     HomePage,
     LoginPage,
     RegisterPage,
-    ForgetPage
+    ForgetPage,
+    ReadPage,
+    SafeHtmlPipe
   ],
   imports: [
     BrowserModule,
@@ -43,7 +48,8 @@ import { StoryService} from '../services/story.service';
     HomePage,
     LoginPage,
     RegisterPage,
-    ForgetPage
+    ForgetPage,
+    ReadPage
   ],
   providers: [
     StatusBar,
@@ -52,7 +58,8 @@ import { StoryService} from '../services/story.service';
     AngularFirestoreModule,
     UtilsProvider,
     StoryService,
-    MessageService
+    MessageService,
+    SliceService
   ]
 })
 export class AppModule { }

@@ -1,0 +1,35 @@
+<!--
+  Generated template for the ReadPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<!-- <ion-header>
+
+  <ion-navbar>
+    <ion-title>read</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+</ion-content> -->
+
+
+
+<div *ngIf="story" >
+  <!-- <div class = "list" *ngFor="let slice of slicesOfStory" layout="row" layout-align="center none" flex = "100"> -->
+      <!-- <h2>{{ story.title | uppercase }} </h2> -->
+      <ion-card  *ngFor="let slice of slicesOfStory" layout="row" >
+          <ion-card-header>{{slice.title}} </ion-card-header>
+          <ion-card-content [innerHTML]="slice.text | safeHtml">
+              <!-- <div [innerHTML]="post.body"></div>              -->
+          </ion-card-content>
+        </ion-card>      
+  <!-- </div> -->
+  <div class = "boutons" *ngFor="let choice of slice.choices" >
+      <button flex = "100" ion-button (click)="addNextSliceToStory(choice)" >{{choice.label}}</button>     
+  </div>  
+</div>

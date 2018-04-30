@@ -1,10 +1,11 @@
-import { Component, Input,OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { LoginPage } from '../login/login';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { UtilsProvider } from '../../providers/utils/utils';
 import { StoryService} from '../../services/story.service';
 import { Story } from '../../model/Story';
+import { ReadPage } from '../read/read';
 
 @Component({
   selector: 'page-home',
@@ -32,6 +33,12 @@ export class HomePage {
 
   ngOnInit() {
     this.getStories();
+  }
+
+  read(storyId : string) {
+    this.navCtrl.push(ReadPage, {
+      'id': storyId
+    })
   }
 
 }
