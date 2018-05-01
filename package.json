@@ -1,8 +1,8 @@
 {
-  "name": "myApp",
+  "name": "Storym",
   "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "http://ionicframework.com/",
+  "author": "Anthony Archambeau",
+  "homepage": "http://www.storym.io",
   "private": true,
   "scripts": {
     "clean": "ionic-app-scripts clean",
