@@ -8,13 +8,6 @@ import { RegisterPage } from '../register/register';
 import { ForgetPage } from '../forget/forget';
 import * as firebase from 'firebase/app';
 
-/**
- * Generated class for the LoginPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',
