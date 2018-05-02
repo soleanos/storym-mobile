@@ -38,26 +38,26 @@ export class StoryService {
   //////// Get methods //////////
 
   /** Get all stories  */
-  getStories (): Observable<any[]> {
-    this.storyCollection = this.db.collection<Story>('Story');
-    this.stories = this.storyCollection.snapshotChanges().map(actions => {
-      return actions.map(a => {
-        const data = a.payload.doc.data() as Story;
-          data.id = a.payload.doc.id;
-        return data;
-      });
-    });
-    return this.stories
-      .pipe(
-        tap(stories => this.log(`fetched stories`)),
-        catchError(this.handleError('getStories', []))
-      );
-  }
+  // getStories (): Observable<any[]> {
+  //   this.storyCollection = this.db.collection<Story>('Story');
+  //   this.stories = this.storyCollection.snapshotChanges().map(actions => {
+  //     return actions.map(a => {
+  //       const data = a.payload.doc.data() as Story;
+  //         data.id = a.payload.doc.id;
+  //       return data;
+  //     });
+  //   });
+  //   return this.stories
+  //     .pipe(
+  //       tap(stories => this.log(`fetched stories`)),
+  //       catchError(this.handleError('getStories', []))
+  //     );
+  // }
 
    /** Get all stories of specified id  */
-   getStoriesOfAuthor (idAuthor: string): Observable<any[]> {
+   getStories (): Observable<any[]> {
     this.storyCollection = this.db.collection<Story>('Story',
-     clause => clause.where('author', '==', idAuthor));
+     clause => clause.where('status', '==', 2));
     this.stories = this.storyCollection.snapshotChanges().map(actions => {
       return actions.map(a => {
         const data = a.payload.doc.data() as Story;

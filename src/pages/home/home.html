@@ -20,10 +20,10 @@
 
     <ion-item>
       <ion-avatar item-start>
-        <img src="http://www.lachm.com.np/wp-content/themes/lachm/images/team.png">
+        <img src= {{story.authorPicture}}>
       </ion-avatar>
-      <h2>Nom Auteur</h2>
-      <p>Date création histoire</p>
+      <h2>Auteur : {{story.authorName}}</h2>
+      <p>Date de création : {{story.creationDate}}</p>
     </ion-item>
 
     <img src= {{story.cover}}>
