@@ -7,6 +7,18 @@
     </ion-buttons>
     <ion-title>Les histoires disponibles</ion-title>
   </ion-toolbar>
+
+  <ion-toolbar no-border-top>
+    <ion-searchbar placeholder="Rechercher une histoire" (ionInput)="filterItems($event)"></ion-searchbar>
+  </ion-toolbar>
+
+  <ion-item>
+    <ion-label>Catégories : </ion-label>
+    <ion-select [(ngModel)]="skittles" multiple="false" okText="Selectioner" cancelText="Annuler" >
+      <ion-option *ngFor="let category of categories" [value]="category">{{category.label}}</ion-option>
+    </ion-select>
+  </ion-item>
+
 </ion-header>
 
 <ion-content padding>

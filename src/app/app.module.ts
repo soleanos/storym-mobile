@@ -20,6 +20,7 @@ import { ForgetPage } from '../pages/forget/forget';
 import { MessageService } from '../services/message.service';
 import { SliceService} from '../services/slice.service';
 import { StoryService} from '../services/story.service';
+import { CategoryService} from '../services/category.service';
 
 import { ReadPage } from '../pages/read/read';
 import { SafeHtmlPipe } from '../pipes/safe-html.pipe';
@@ -59,7 +60,8 @@ import { SafeHtmlPipe } from '../pipes/safe-html.pipe';
     UtilsProvider,
     StoryService,
     MessageService,
-    SliceService
+    SliceService,
+    CategoryService
   ]
 })
 export class AppModule { }

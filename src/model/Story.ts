@@ -8,4 +8,5 @@ export class Story {
     abstract?: string;
     author?: string;
     published?: boolean;
+    category?: string;
   }
