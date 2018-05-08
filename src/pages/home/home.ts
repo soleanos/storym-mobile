@@ -17,7 +17,7 @@ export class HomePage {
   stories: Story[];
   storiesTmp : Story[];
   categories: Category[];
-  categorySelected: Category;
+  @Input() selected = 'Tout voir';
 
   constructor(public navCtrl: NavController, public afAuth: AngularFireAuth, public utils: UtilsProvider,private storyService: StoryService,
     private categoryService : CategoryService
@@ -35,9 +35,14 @@ export class HomePage {
     this.stories = this.storiesTmp;
   }
   
+  fillCategories(categories:any[]): void {
+    categories.push({label:'Tout voir'});
+    this.categories = categories;
+  }
+
   getCategories(): void {
     this.categoryService.getCategories()
-    .subscribe(categories => this.categories = categories);
+    .subscribe(categories => this.fillCategories(categories));
   }
 
   doLogout() {
@@ -59,7 +64,10 @@ export class HomePage {
   }
 
   filterItems(ev: any) {
-    this.stories = this.storiesTmp;
+    // this.stories = this.storiesTmp;
+
+    this.filterByCategory(this.selected);
+
     let val = ev.target.value;
     if (val && val.trim() !== '') {
       this.stories = this.stories.filter(function(item) {
@@ -68,11 +76,13 @@ export class HomePage {
     }
   }
 
-  filterByCateg(category : string) {
+  filterByCategory(selected: string){
     this.stories = this.storiesTmp;
-    this.stories = this.stories.filter(function(item) {
-      return item.category.toLowerCase().includes(category.toLowerCase());
-    });
+    if(selected != 'Tout voir'){
+      this.stories = this.stories.filter(function(item) {
+        return item.category.toLowerCase().includes(selected.toLowerCase());
+      });
+    }
   }
 
 }

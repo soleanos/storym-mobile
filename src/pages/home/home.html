@@ -5,19 +5,22 @@
         <ion-icon name="log-out"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title>Les histoires disponibles</ion-title>
-  </ion-toolbar>
-
-  <ion-toolbar no-border-top>
-    <ion-searchbar placeholder="Rechercher une histoire" (ionInput)="filterItems($event)"></ion-searchbar>
+    <ion-title>Les histoires publiées</ion-title>
   </ion-toolbar>
 
   <ion-item>
-    <ion-label>Catégories : </ion-label>
-    <ion-select [(ngModel)]="skittles" multiple="false" okText="Selectioner" cancelText="Annuler" >
-      <ion-option *ngFor="let category of categories" [value]="category">{{category.label}}</ion-option>
+    <ion-label>Catégories :</ion-label>
+    <ion-select  [(ngModel)]="selected" name="Catégories" okText="Selectionner" cancelText="Annuler" (ionChange)="filterByCategory(this.selected)">
+      <ion-option *ngFor="let category of categories" [value]="category.label">{{category.label}}</ion-option>
     </ion-select>
   </ion-item>
+
+  <ion-toolbar >
+    <ion-searchbar placeholder="Rechercher une histoire" (ionInput)="filterItems($event)"></ion-searchbar>
+  </ion-toolbar>
+
+
+ 
 
 </ion-header>
 

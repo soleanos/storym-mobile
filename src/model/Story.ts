@@ -1,4 +1,6 @@
 import { Slice } from '../model/Slice';
+import { Category } from './Category';
+
 
 export class Story {
     id: string;
