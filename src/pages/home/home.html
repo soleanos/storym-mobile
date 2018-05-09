@@ -1,21 +1,26 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons start>
+    <ion-title>Les histoires publiées</ion-title>
+    <ion-buttons end>
       <button ion-button icon-only color="primary" (click)="doLogout()">
         <ion-icon name="log-out"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title>Les histoires publiées</ion-title>
+    <ion-buttons start>
+        <button ion-button icon-only color="primary" (click)="openFiltering()">
+              <ion-icon name="arrow-down"></ion-icon>
+        </button>
+      </ion-buttons>
   </ion-toolbar>
 
-  <ion-item>
+  <ion-item *ngIf="filterOpened" > 
     <ion-label>Catégories :</ion-label>
     <ion-select  [(ngModel)]="selected" name="Catégories" okText="Selectionner" cancelText="Annuler" (ionChange)="filterByCategory(this.selected)">
       <ion-option *ngFor="let category of categories" [value]="category.label">{{category.label}}</ion-option>
     </ion-select>
   </ion-item>
 
-  <ion-toolbar >
+  <ion-toolbar *ngIf="filterOpened" >
     <ion-searchbar placeholder="Rechercher une histoire" (ionInput)="filterItems($event)"></ion-searchbar>
   </ion-toolbar>
 

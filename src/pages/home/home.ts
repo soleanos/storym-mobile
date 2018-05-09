@@ -17,12 +17,17 @@ export class HomePage {
   stories: Story[];
   storiesTmp : Story[];
   categories: Category[];
+  filterOpened : boolean;
   @Input() selected = 'Tout voir';
 
   constructor(public navCtrl: NavController, public afAuth: AngularFireAuth, public utils: UtilsProvider,private storyService: StoryService,
     private categoryService : CategoryService
   ) {
     this.stories = new Array<Story>();
+  }
+
+  openFiltering(){
+    this.filterOpened = !this.filterOpened;
   }
 
   getStories(): void {
@@ -55,6 +60,7 @@ export class HomePage {
   ngOnInit() {
     this.getStories();
     this.getCategories();
+    this.filterOpened = false;
   }
 
   read(storyId : string) {
