@@ -8,6 +8,7 @@ import { Story } from '../../model/Story';
 import { ReadPage } from '../read/read';
 import { CategoryService} from '../../services/category.service';
 import { Category } from '../../model/Category';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'page-home',
@@ -21,7 +22,7 @@ export class HomePage {
   @Input() selected = 'Tout voir';
 
   constructor(public navCtrl: NavController, public afAuth: AngularFireAuth, public utils: UtilsProvider,private storyService: StoryService,
-    private categoryService : CategoryService
+    private categoryService : CategoryService,private userService : UserService
   ) {
     this.stories = new Array<Story>();
   }
@@ -90,5 +91,11 @@ export class HomePage {
       });
     }
   }
+
+  verifMark(storyId : string){
+    // console.log(this.userService.getMarkDoc);
+    return true;
+  }
+
 
 }

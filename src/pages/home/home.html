@@ -69,7 +69,8 @@
 
     <hr>
 
-    <ion-item >
+
+    <ion-item *ngIf="verifMark(story.id)" >
       <button color="dark" class = "button" ion-button (click)="read(story.id)">Lire</button>  
     </ion-item>
 

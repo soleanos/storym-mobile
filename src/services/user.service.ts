@@ -45,6 +45,7 @@ export interface NewUserData {
 export class UserService {
     users: Observable<User[]>;
     user: Observable<User>;
+    mark: Observable<Mark>;
     marks: Observable<Mark[]>;
 
     private userCollection: AngularFirestoreCollection<User>;
@@ -211,5 +212,19 @@ export class UserService {
         return this.markCollection.doc<Mark>(idStory);
     }
 
+    /** Get a story by ID  */
+    getMark(idUser: string, idStory : string): Observable<Mark> {
+        this.mark =  this.getMarkDoc(idUser,idStory).snapshotChanges().map(
+        mark => {
+            const data = mark.payload.data() as Mark;
+            data.id = mark.payload.id;
+            return data;
+        }
+        );
+        return this.mark.pipe(
+        tap(_ => this.log(`fetched story id=${idStory}`)),
+        catchError(this.handleError<Story>(`Story : id=${idStory}`))
+        );
+    }
 
 }
