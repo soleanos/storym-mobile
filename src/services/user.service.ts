@@ -7,6 +7,7 @@ import 'rxjs/add/operator/take';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { AngularFirestore , AngularFirestoreCollection, AngularFirestoreDocument} from 'angularfire2/firestore';
+import { UtilsProvider } from '../providers/utils/utils';
 
 import { MessageService } from './message.service';
 
@@ -26,7 +27,7 @@ export interface User {
     admin?: Boolean;
     providers?: any;
     exist: Boolean;
-    marks:Mark[];
+    marks?:Mark[];
 }
 
 export interface NewUserData {
@@ -48,11 +49,13 @@ export class UserService {
 
     private userCollection: AngularFirestoreCollection<User>;
     private userDoc: AngularFirestoreDocument<User>;
+    private markCollection: AngularFirestoreCollection<Mark>;
+    private markDoc: AngularFirestoreDocument<Mark>;
 
     currentUser: ReplaySubject<any> = new ReplaySubject(1);
 
     constructor(private messageService: MessageService,
-        private db: AngularFirestore) {
+        private db: AngularFirestore, private utils: UtilsProvider) {
         this.initialize();
     }
 
@@ -193,13 +196,20 @@ export class UserService {
     /** POST Add a new Mark */
     /** Sauvegarder l'avancement du lecteur dans l'histoire */
     addMark (idUser: string,storyId: string, mark: Mark): Observable<any> {
-        const markId =  this.db.createId();
-        mark.id = markId;
+        // const markId =  this.db.createId();
+        this.utils.showToast('Marque page placé ! ');
         return Observable.fromPromise(this.getMarkCollection(idUser).doc(storyId).set(mark))
         .pipe(
-            tap((_: any) => this.log(`added slice w/ id=${markId}`)),
-            catchError(this.handleError<Slice>('addSlice'))
+            tap((_: any) => this.log(`added slice w/ id=${storyId}`))
         );
     }
+
+    /** Get the firebase reference of the slice collection  */
+    getMarkDoc(idUser: string,idStory : string):  AngularFirestoreDocument<Mark> {
+        this.userDoc = this.getUserDoc(idUser);
+        this.markCollection = this.userDoc.collection<Mark>('/Mark/');
+        return this.markCollection.doc<Mark>(idStory);
+    }
+
 
 }
