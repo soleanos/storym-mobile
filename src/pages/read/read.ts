@@ -4,7 +4,11 @@ import { StoryService } from '../../services/story.service';
 import { SliceService } from '../../services/slice.service';
 import { Slice } from '../../model/Slice';
 import { Choice } from '../../model/Choice';
+import { Mark } from '../../model/Mark';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { UserService } from '../../services/user.service';
+import { AuthService } from '../../services/auth.service';
+
 
 /**
  * Generated class for the ReadPage page.
@@ -30,7 +34,10 @@ export class ReadPage {
     public navCtrl: NavController,
     private storyService: StoryService,
     public navParams: NavParams,
-    private sliceService: SliceService) {
+    private sliceService: SliceService,
+    private userService: UserService,
+    private authService: AuthService,
+    ) {
       this.slicesOfStory = new Array<Slice>();
       this.choices = new Array<Choice>();
       this.slice = new Slice();
@@ -99,6 +106,15 @@ export class ReadPage {
   
   ionViewDidLoad() {
     console.log('ionViewDidLoad ReadPage');
+  }
+
+  markPage(){
+    let mark : Mark = {
+      slices : this.slicesOfStory
+    };
+    this.authService.getAuth().subscribe(auth=>
+      this.userService.addMark(auth.uid,this.story.id,mark)
+    )
   }
 
 }

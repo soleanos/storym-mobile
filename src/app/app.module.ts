@@ -21,6 +21,8 @@ import { MessageService } from '../services/message.service';
 import { SliceService} from '../services/slice.service';
 import { StoryService} from '../services/story.service';
 import { CategoryService} from '../services/category.service';
+import { UserService } from '../services/user.service';
+import { AuthService} from '../services/auth.service';
 
 import { ReadPage } from '../pages/read/read';
 import { SafeHtmlPipe } from '../pipes/safe-html.pipe';
@@ -61,7 +63,9 @@ import { SafeHtmlPipe } from '../pipes/safe-html.pipe';
     StoryService,
     MessageService,
     SliceService,
-    CategoryService
+    CategoryService,
+    UserService,
+    AuthService
   ]
 })
 export class AppModule { }

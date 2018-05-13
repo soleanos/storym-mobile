@@ -7,6 +7,7 @@ import { HomePage } from '../home/home';
 import { RegisterPage } from '../register/register';
 import { ForgetPage } from '../forget/forget';
 import * as firebase from 'firebase/app';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'page-login',
@@ -15,7 +16,8 @@ import * as firebase from 'firebase/app';
 export class LoginPage {
   private loginForm: FormGroup;
 
-  constructor(public navCtrl: NavController, private formBuilder: FormBuilder, public afAuth: AngularFireAuth, public utils: UtilsProvider, public plt: Platform) {
+  constructor(public navCtrl: NavController, private formBuilder: FormBuilder, 
+    public afAuth: AngularFireAuth, public utils: UtilsProvider, public plt: Platform,private userService: UserService) {
     this.loginForm = this.formBuilder.group({
       email: ['', Validators.compose([Validators.email, Validators.required])],
       password: ['', Validators.compose([Validators.minLength(6), Validators.required])]
@@ -24,7 +26,7 @@ export class LoginPage {
 
   doLogin() {
     this.afAuth.auth.signInWithEmailAndPassword(this.loginForm.value.email, this.loginForm.value.password)
-      .then(res => this.handleResponse())
+      .then(res => this.handleResponse(res))
       .catch(err => this.handleError(err));
   }
 
@@ -50,19 +52,25 @@ export class LoginPage {
 
     if (this.plt.is('cordova')) {
       this.afAuth.auth.signInWithRedirect(provider)
-        .then(res => this.handleResponse())
+        .then(res => this.handleResponse(res))
         .catch(err => this.handleError(err));
     }
     else {
       // It will work only in browser
       this.afAuth.auth.signInWithPopup(provider)
-        .then(res => this.handleResponse())
+        .then(res => this.handleResponse(res))
         .catch(err => this.handleError(err));
     }
   }
 
-  handleResponse() {
-    this.utils.showToast('You are successfully logged in');
+  handleResponse(res:any) {
+    console.log(res);
+    if(res.additionalUserInfo.isNewUser){
+      this.userService.setUserAccount(res.user);
+      console.log(res.additionalUserInfo.isNewUser);
+      this.utils.showToast('Compte crée ');
+    }
+    this.utils.showToast('Vous êtes désormais identifié');
     this.navCtrl.setRoot(HomePage);
   }
 

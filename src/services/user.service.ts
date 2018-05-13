@@ -11,7 +11,8 @@ import { AngularFirestore , AngularFirestoreCollection, AngularFirestoreDocument
 import { MessageService } from './message.service';
 
 import { Story } from '../model/Story';
-
+import { Slice } from '../model/Slice';
+import { Mark } from '../model/Mark';
 
 export interface User {
     email?: String;
@@ -25,6 +26,7 @@ export interface User {
     admin?: Boolean;
     providers?: any;
     exist: Boolean;
+    marks:Mark[];
 }
 
 export interface NewUserData {
@@ -42,12 +44,10 @@ export interface NewUserData {
 export class UserService {
     users: Observable<User[]>;
     user: Observable<User>;
-
-    stories: Observable<any[]>;
-    story: Observable<Story>;
+    marks: Observable<Mark[]>;
 
     private userCollection: AngularFirestoreCollection<User>;
-    private storyDoc: AngularFirestoreDocument<User>;
+    private userDoc: AngularFirestoreDocument<User>;
 
     currentUser: ReplaySubject<any> = new ReplaySubject(1);
 
@@ -61,7 +61,7 @@ export class UserService {
         this.userCollection = this.db.collection<User>('User');
     }
 
-    //   Get the firebase reference of the story
+    //   Get the firebase reference of the User
     getUserDoc(id: string): AngularFirestoreDocument<User> {
         return this.db.doc<User>('User/' + id);
     }
@@ -179,11 +179,27 @@ export class UserService {
     };
   }
 
-  /** Log a HeroService message with the MessageService */
-  private log(message: string) {
-    this.messageService.add('StoryService: ' + message);
-  }
+    /** Log a HeroService message with the MessageService */
+    private log(message: string) {
+        this.messageService.add('StoryService: ' + message);
+    }
 
+    /** Get the firebase reference of the slice collection  */
+    getMarkCollection(idUser: string):  AngularFirestoreCollection<Mark> {
+        this.userDoc = this.getUserDoc(idUser);
+        return this.userDoc.collection<Mark>('/Mark/');
+    }
 
+    /** POST Add a new Mark */
+    /** Sauvegarder l'avancement du lecteur dans l'histoire */
+    addMark (idUser: string,storyId: string, mark: Mark): Observable<any> {
+        const markId =  this.db.createId();
+        mark.id = markId;
+        return Observable.fromPromise(this.getMarkCollection(idUser).doc(storyId).set(mark))
+        .pipe(
+            tap((_: any) => this.log(`added slice w/ id=${markId}`)),
+            catchError(this.handleError<Slice>('addSlice'))
+        );
+    }
 
 }
