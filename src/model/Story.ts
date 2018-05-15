@@ -1,5 +1,6 @@
 import { Slice } from '../model/Slice';
 import { Category } from './Category';
+import { Mark } from './Mark';
 
 
 export class Story {
@@ -11,4 +12,5 @@ export class Story {
     author?: string;
     published?: boolean;
     category?: string;
+    mark? : Mark;
   }

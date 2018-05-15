@@ -5,10 +5,13 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { UtilsProvider } from '../../providers/utils/utils';
 import { StoryService} from '../../services/story.service';
 import { Story } from '../../model/Story';
+import { Mark } from '../../model/Mark';
 import { ReadPage } from '../read/read';
 import { CategoryService} from '../../services/category.service';
 import { Category } from '../../model/Category';
 import { UserService } from '../../services/user.service';
+import { AuthService } from '../../services/auth.service';
+import { GetStoryMarkPipe } from '../../pipes/get-story-mark';
 
 @Component({
   selector: 'page-home',
@@ -19,10 +22,12 @@ export class HomePage {
   storiesTmp : Story[];
   categories: Category[];
   filterOpened : boolean;
+  auth : any;
+  mark : Mark;
   @Input() selected = 'Tout voir';
 
   constructor(public navCtrl: NavController, public afAuth: AngularFireAuth, public utils: UtilsProvider,private storyService: StoryService,
-    private categoryService : CategoryService,private userService : UserService
+    private categoryService : CategoryService,private userService : UserService,  private authService: AuthService,private markPipe : GetStoryMarkPipe 
   ) {
     this.stories = new Array<Story>();
   }
@@ -37,6 +42,11 @@ export class HomePage {
   }
 
   fillStories(stories:any[]): void {
+     
+    for (let story of stories) {
+      this.markPipe.transform(story)
+    }
+
     this.storiesTmp = stories;
     this.stories = this.storiesTmp;
   }
@@ -62,11 +72,13 @@ export class HomePage {
     this.getStories();
     this.getCategories();
     this.filterOpened = false;
+    this.fillAuth();
   }
 
   read(storyId : string) {
     this.navCtrl.push(ReadPage, {
-      'id': storyId
+      'id': storyId,
+      'mark':false     
     })
   }
 
@@ -92,10 +104,22 @@ export class HomePage {
     }
   }
 
+  fillAuth (){
+    this.authService.getAuth().subscribe(auth=>
+      this.auth = auth
+    )
+  }
+
   verifMark(storyId : string){
-    // console.log(this.userService.getMarkDoc);
+    // this.userService.getMark(this.auth.uid,storyId).subscribe(mark => this.fillMark(mark)).unsubscribe();
     return true;
   }
+
+  fillMark(mark : Mark){
+    this.mark = mark;
+  }
+
+ 
 
 
 }

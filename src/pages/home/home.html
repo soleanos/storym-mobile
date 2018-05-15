@@ -24,13 +24,10 @@
     <ion-searchbar placeholder="Rechercher une histoire" (ionInput)="filterItems($event)"></ion-searchbar>
   </ion-toolbar>
 
-
- 
-
 </ion-header>
 
 <ion-content padding>
-  <ion-card *ngFor="let story of stories">
+  <ion-card *ngFor="let story  of stories  ">
 
     <ion-card-header class = "title">
       <b>{{ story.title }}</b>
@@ -70,8 +67,13 @@
     <hr>
 
 
-    <ion-item *ngIf="verifMark(story.id)" >
+    <ion-item *ngIf="!story.mark" >
       <button color="dark" class = "button" ion-button (click)="read(story.id)">Lire</button>  
+    </ion-item>
+
+    <ion-item style = "text-align:center" *ngIf="story.mark" >
+      <button color="dark" class = "button-inline" ion-button (click)="read(story.id)">Continuer</button>  
+      <button color="dark" class = "button-inline" ion-button (click)="read(story.id)">Recommencer</button>  
     </ion-item>
 
   </ion-card>

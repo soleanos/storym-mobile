@@ -207,24 +207,20 @@ export class UserService {
 
     /** Get the firebase reference of the slice collection  */
     getMarkDoc(idUser: string,idStory : string):  AngularFirestoreDocument<Mark> {
-        this.userDoc = this.getUserDoc(idUser);
-        this.markCollection = this.userDoc.collection<Mark>('/Mark/');
-        return this.markCollection.doc<Mark>(idStory);
+        return this.getMarkCollection(idUser).doc<Mark>(idStory);
     }
 
     /** Get a story by ID  */
     getMark(idUser: string, idStory : string): Observable<Mark> {
-        this.mark =  this.getMarkDoc(idUser,idStory).snapshotChanges().map(
-        mark => {
-            const data = mark.payload.data() as Mark;
-            data.id = mark.payload.id;
-            return data;
-        }
-        );
-        return this.mark.pipe(
-        tap(_ => this.log(`fetched story id=${idStory}`)),
-        catchError(this.handleError<Story>(`Story : id=${idStory}`))
-        );
+        return  this.getMarkDoc(idUser,idStory).snapshotChanges().map(
+            mark => { 
+            if(mark.payload.data()){
+              const data = mark.payload.data() as Mark;
+              data.id = mark.payload.id;
+              return data;
+            }
+            }
+        ); 
     }
 
 }

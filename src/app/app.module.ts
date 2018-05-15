@@ -26,6 +26,10 @@ import { AuthService} from '../services/auth.service';
 
 import { ReadPage } from '../pages/read/read';
 import { SafeHtmlPipe } from '../pipes/safe-html.pipe';
+import { GetStoryMarkPipe } from '../pipes/get-story-mark';
+
+// import { SafeHtmlPipe } from '../pipes/safe-html.pipe';
+import { PipesModule } from '../pipes/pipes.module';
 
 @NgModule({
   declarations: [
@@ -35,7 +39,7 @@ import { SafeHtmlPipe } from '../pipes/safe-html.pipe';
     RegisterPage,
     ForgetPage,
     ReadPage,
-    SafeHtmlPipe
+    SafeHtmlPipe,
   ],
   imports: [
     BrowserModule,
@@ -44,6 +48,7 @@ import { SafeHtmlPipe } from '../pipes/safe-html.pipe';
     AngularFireDatabaseModule,
     AngularFirestoreModule,
     AngularFireAuthModule,
+    PipesModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -65,7 +70,8 @@ import { SafeHtmlPipe } from '../pipes/safe-html.pipe';
     SliceService,
     CategoryService,
     UserService,
-    AuthService
+    AuthService,
+    GetStoryMarkPipe
   ]
 })
 export class AppModule { }
