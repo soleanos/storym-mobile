@@ -45,9 +45,26 @@ export class ReadPage {
 
   ngOnInit() {
     const id = this.navParams.get('id');
-    this.getFirstSlice(id);
+    const mark : Mark = this.navParams.get('mark');
+    
+    if(mark){
+      this.fillMark(mark);
+      this.slice = this.slicesOfStory[this.slicesOfStory.length-1]; 
+    }else{
+      this.getFirstSlice(id);
+    }
     this.getStory(id);
     this.getSlices(id);
+    console.log(mark);
+  }
+
+  /**
+   * Récupère l'histoire correspondant à l'id passé en paramètre
+   * @param id
+   */
+  fillMark(mark:Mark): void {
+    this.slicesOfStory = mark.slices;
+    console.log(this.slicesOfStory);
   }
 
   /**

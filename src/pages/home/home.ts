@@ -82,6 +82,21 @@ export class HomePage {
     })
   }
 
+  reload(storyId : string) {
+    this.navCtrl.push(ReadPage, {
+      'id': storyId,
+      'mark':false     
+    })
+  }
+
+  continue(story : Story) {
+    this.navCtrl.push(ReadPage, {
+      'id': story.id,
+      'mark':story.mark     
+    })
+  }
+
+
   filterItems(ev: any) {
     // this.stories = this.storiesTmp;
 
