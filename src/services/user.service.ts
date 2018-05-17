@@ -223,4 +223,15 @@ export class UserService {
         ); 
     }
 
+    /** Get a story by ID  */
+    deleteMark(idUser: string, storyId : string) {
+        this.getMarkCollection(idUser).doc(storyId).delete().then(function() {
+            this.utils.showToast("Votre marque page a été retiré")
+        }).catch(function(error) {
+            console.error("Erreur, votre marque page n'a pas pu être supprimé : ", error);
+        });
+    
+    }
+    
+
 }

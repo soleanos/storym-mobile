@@ -73,7 +73,7 @@
 
     <ion-item style = "text-align:center" *ngIf="story.mark" >
       <button color="dark" class = "button-inline" ion-button (click)="continue(story)">Continuer</button>  
-      <button color="dark" class = "button-inline" ion-button (click)="reload(story)">Recommencer</button>  
+      <button color="dark" class = "button-inline" ion-button (click)="reload(story.id)">Recommencer</button>  
     </ion-item>
 
   </ion-card>

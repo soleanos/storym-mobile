@@ -1,22 +1,23 @@
 
+<ion-header>
   <ion-toolbar>
-    <ion-title>{{slice.title}}</ion-title>
-    <ion-buttons start>
-      <button ion-button icon-only color="primary" (click)="openFiltering()">
-            <ion-icon name="settings"></ion-icon>
-      </button>
-    </ion-buttons>
-    <ion-buttons end>
-      <button ion-button icon-only color="primary" (click)="doLogout()">
-        <ion-icon name="book"></ion-icon>
-      </button>
-      <button ion-button icon-only color="primary" (click)="markPage()">
-        <ion-icon name="bookmark"></ion-icon>
-      </button>
-    </ion-buttons>
-</ion-toolbar>
-
-<ion-content class = "story" ion-content *ngIf="story" >
+      <ion-title>{{slice.title}}</ion-title>
+      <ion-buttons start>
+        <button ion-button icon-only color="primary" (click)="openFiltering()">
+              <ion-icon name="settings"></ion-icon>
+        </button>
+      </ion-buttons>
+      <ion-buttons end>
+        <button ion-button icon-only color="primary" (click)="doLogout()">
+          <ion-icon name="book"></ion-icon>
+        </button>
+        <button ion-button icon-only color="primary" (click)="markPage()">
+          <ion-icon name="bookmark"></ion-icon>
+        </button>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content padding ion-content *ngIf="story" >
     <ion-card  *ngFor="let slice of slicesOfStory" >
         <ion-card-content [innerHTML]="slice.text | safeHtml">
         </ion-card-content>

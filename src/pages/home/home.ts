@@ -77,16 +77,18 @@ export class HomePage {
 
   read(storyId : string) {
     this.navCtrl.push(ReadPage, {
-      'id': storyId,
-      'mark':false     
+      'id': storyId 
     })
   }
 
   reload(storyId : string) {
-    this.navCtrl.push(ReadPage, {
-      'id': storyId,
-      'mark':false     
-    })
+    this.authService.getAuth().subscribe(auth=>
+      this.userService.deleteMark(auth.uid,storyId)
+    )
+
+    // this.navCtrl.push(ReadPage, {
+    //   'id': storyId
+    // })
   }
 
   continue(story : Story) {

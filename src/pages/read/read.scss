@@ -13,11 +13,15 @@ page-read {
     }
 
     .story{
-        position:relative;
-        margin-top:0px;
+        // position:relative;
+        // margin-top:0px;
         
     }
 
-    height: 100%;
-    padding:1px;
+    ion-content{
+        // overflow: scroll;
+    }
+    
+   
+
 }
