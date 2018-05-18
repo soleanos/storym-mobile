@@ -7,21 +7,14 @@ page-read {
         }
     }
 
-    button {
+    .button {
         display: block;
-        margin: auto;
+        width:100%;
+        overflow-wrap: break-word;
+        white-space: pre-line;
+        word-break: break-all;
+        height:auto;
+        padding: 10px;
     }
-
-    .story{
-        // position:relative;
-        // margin-top:0px;
-        
-    }
-
-    ion-content{
-        // overflow: scroll;
-    }
-    
-   
 
 }

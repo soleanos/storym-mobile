@@ -2,22 +2,23 @@
 <ion-header>
   <ion-toolbar>
       <ion-title>{{slice.title}}</ion-title>
-      <ion-buttons start>
+      <!-- <ion-buttons start>
         <button ion-button icon-only color="primary" (click)="openFiltering()">
               <ion-icon name="settings"></ion-icon>
         </button>
-      </ion-buttons>
+      </ion-buttons> -->
       <ion-buttons end>
-        <button ion-button icon-only color="primary" (click)="doLogout()">
+        <!-- <button ion-button icon-only color="primary" (click)="doLogout()">
           <ion-icon name="book"></ion-icon>
-        </button>
+        </button> -->
         <button ion-button icon-only color="primary" (click)="markPage()">
           <ion-icon name="bookmark"></ion-icon>
         </button>
       </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content padding ion-content *ngIf="story" >
+<ion-content padding  ion-content  >
+    <div *ngIf="story"  >
     <ion-card  *ngFor="let slice of slicesOfStory" >
         <ion-card-content [innerHTML]="slice.text | safeHtml">
         </ion-card-content>
@@ -25,6 +26,7 @@
     <div style="text-align: center;">
       <button color="dark" outline class = "button"  *ngFor="let choice of slice.choices"  ion-button (click)="addNextSliceToStory(choice)" >{{choice.label}}</button>     
     </div>
+  </div>
 </ion-content>    
 
 
