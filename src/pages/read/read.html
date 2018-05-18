@@ -19,7 +19,7 @@
 </ion-header>
 <ion-content padding  ion-content  >
     <div *ngIf="story"  >
-    <ion-card  *ngFor="let slice of slicesOfStory" >
+    <ion-card [id]="slice.id"  *ngFor="let slice of slicesOfStory" >
         <ion-card-content [innerHTML]="slice.text | safeHtml">
         </ion-card-content>
     </ion-card>   

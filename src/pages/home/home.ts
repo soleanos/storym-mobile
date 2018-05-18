@@ -26,6 +26,7 @@ export class HomePage {
   mark : Mark;
   @Input() selected = 'Tout voir';
 
+
   constructor(public navCtrl: NavController, public afAuth: AngularFireAuth, public utils: UtilsProvider,private storyService: StoryService,
     private categoryService : CategoryService,private userService : UserService,  private authService: AuthService,private markPipe : GetStoryMarkPipe 
   ) {
