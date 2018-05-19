@@ -12,6 +12,7 @@ import { Category } from '../../model/Category';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
 import { GetStoryMarkPipe } from '../../pipes/get-story-mark';
+import { AlertController } from 'ionic-angular';
 
 @Component({
   selector: 'page-home',
@@ -28,7 +29,8 @@ export class HomePage {
 
 
   constructor(public navCtrl: NavController, public afAuth: AngularFireAuth, public utils: UtilsProvider,private storyService: StoryService,
-    private categoryService : CategoryService,private userService : UserService,  private authService: AuthService,private markPipe : GetStoryMarkPipe 
+    private categoryService : CategoryService,private userService : UserService,  private authService: AuthService,private markPipe : GetStoryMarkPipe,
+    private alertCtrl: AlertController
   ) {
     this.stories = new Array<Story>();
   }
@@ -137,7 +139,28 @@ export class HomePage {
     this.mark = mark;
   }
 
- 
+  signaler() {
+    let alert = this.alertCtrl.create({
+      title: 'Signaler cette histoire',
+      message: 'Etes vous sur de vouloir signaler cette histoire ?',
+      buttons: [
+        {
+          text: 'Non',
+          role: 'cancel',
+          handler: () => {
+            console.log('Signalement annulé');
+          }
+        },
+        {
+          text: 'Buy',
+          handler: () => {
+            console.log('Signalement ok ');
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
 
 
 }
