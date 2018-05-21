@@ -64,14 +64,18 @@ export class LoginPage {
   }
 
   handleResponse(res:any) {
-    console.log(res);
-    if(res.additionalUserInfo.isNewUser){
-      this.userService.setUserAccount(res.user);
-      console.log(res.additionalUserInfo.isNewUser);
-      this.utils.showToast('Compte crée ');
-    }
-    this.utils.showToast('Vous êtes désormais identifié');
-    this.navCtrl.setRoot(HomePage);
+    // console.log(res);
+    // if(res.additionalUserInfo.isNewUser){
+      if(res){
+        this.userService.setUserAccount(res);
+        this.utils.showToast('Vous êtes désormais identifié');
+        this.navCtrl.setRoot(HomePage);
+      }
+     
+    //   console.log(res.additionalUserInfo.isNewUser);
+    //   this.utils.showToast('Compte crée ');
+    // }
+
   }
 
   handleError(err) {

@@ -27,7 +27,6 @@ export class HomePage {
   mark : Mark;
   @Input() selected = 'Tout voir';
 
-
   constructor(public navCtrl: NavController, public afAuth: AngularFireAuth, public utils: UtilsProvider,private storyService: StoryService,
     private categoryService : CategoryService,private userService : UserService,  private authService: AuthService,private markPipe : GetStoryMarkPipe,
     private alertCtrl: AlertController
@@ -35,15 +34,24 @@ export class HomePage {
     this.stories = new Array<Story>();
   }
 
-  openFiltering(){
-    this.filterOpened = !this.filterOpened;
-  }
-
+  /** recupère l'ensemble deshistoires en base */
   getStories(): void {
     this.storyService.getStories()
     .subscribe(stories =>  this.fillStories(stories));
   }
 
+  /**
+   * Récuprer l'ensemble des catégories
+   */
+  getCategories(): void {
+    this.categoryService.getCategories()
+    .subscribe(categories => this.fillCategories(categories));
+  }
+
+  /**
+   * 
+   * @param stories Alimente les 
+   */
   fillStories(stories:any[]): void {
      
     for (let story of stories) {
@@ -54,21 +62,15 @@ export class HomePage {
     this.stories = this.storiesTmp;
   }
   
+  /**
+   * Alimente la liste des catégories, et ajoute le libellé "tout voir", 
+   * car il n'est pas sotckée en base de manière a ne pas figurer dans 
+   * la liste de proposition de categ en étape de création d'histoire
+   * @param categories 
+   */
   fillCategories(categories:any[]): void {
     categories.push({label:'Tout voir'});
     this.categories = categories;
-  }
-
-  getCategories(): void {
-    this.categoryService.getCategories()
-    .subscribe(categories => this.fillCategories(categories));
-  }
-
-  doLogout() {
-    this.afAuth.auth.signOut().then(() => {
-      this.utils.showToast('You have been successfully logged out!');
-      this.navCtrl.setRoot(LoginPage);
-    }).catch(err => this.utils.showToast(err.message));
   }
 
   ngOnInit() {
@@ -78,22 +80,28 @@ export class HomePage {
     this.fillAuth();
   }
 
+  /**
+   * Lancer la lecture d'une histoire
+   * @param storyId 
+   */
   read(storyId : string) {
     this.navCtrl.push(ReadPage, {
       'id': storyId 
     })
   }
 
+  /**
+   * Recommancer une histoire, en supprimant le marque page associé 
+   * @param storyId 
+   */
   reload(storyId : string) {
-    this.authService.getAuth().subscribe(auth=>
-      this.userService.deleteMark(auth.uid,storyId)
-    )
-
-    // this.navCtrl.push(ReadPage, {
-    //   'id': storyId
-    // })
+    this.userService.deleteMark(this.auth.uid,storyId);
   }
 
+  /**
+   * Continuer une histoire avec marque page
+   * @param story 
+   */
   continue(story : Story) {
     this.navCtrl.push(ReadPage, {
       'id': story.id,
@@ -101,10 +109,11 @@ export class HomePage {
     })
   }
 
-
+  /**
+   * Filtrage
+   * @param ev 
+   */
   filterItems(ev: any) {
-    // this.stories = this.storiesTmp;
-
     this.filterByCategory(this.selected);
 
     let val = ev.target.value;
@@ -115,6 +124,10 @@ export class HomePage {
     }
   }
 
+  /**
+   * Filtrage par catégorie
+   * @param selected 
+   */
   filterByCategory(selected: string){
     this.stories = this.storiesTmp;
     if(selected != 'Tout voir'){
@@ -124,22 +137,39 @@ export class HomePage {
     }
   }
 
+  /**
+   * Alimenter l'objet authentification 
+   */
   fillAuth (){
     this.authService.getAuth().subscribe(auth=>
       this.auth = auth
     )
   }
 
-  verifMark(storyId : string){
-    // this.userService.getMark(this.auth.uid,storyId).subscribe(mark => this.fillMark(mark)).unsubscribe();
-    return true;
-  }
-
+/**
+ * Alimenter le mark page
+ * @param mark 
+ */
   fillMark(mark : Mark){
     this.mark = mark;
   }
 
-  signaler() {
+    /**
+   * Permet l'ouverture ou la fermeture de la partie filtrage/recherche
+   */
+  openFiltering(){
+    this.filterOpened = !this.filterOpened;
+  }
+
+  checkIfAlreadyReported(story:Story){
+    if(!story.reports){return true}
+    return story.reports.filter(report => report == this.auth.uid).length > 1;
+  }
+
+  /**
+   * Ouvre la fene^tre modale de signalement
+   */
+  signaler(story:Story) {
     let alert = this.alertCtrl.create({
       title: 'Signaler cette histoire',
       message: 'Etes vous sur de vouloir signaler cette histoire ?',
@@ -147,19 +177,46 @@ export class HomePage {
         {
           text: 'Non',
           role: 'cancel',
-          handler: () => {
+          handler: () => { 
             console.log('Signalement annulé');
           }
         },
         {
-          text: 'Buy',
+          text: 'Signaler',
           handler: () => {
-            console.log('Signalement ok ');
+            this.addReportToStory(story);
+            this.utils.showToast('Votre signalement a été pris en compte');
           }
         }
       ]
     });
     alert.present();
+  }
+
+  addReportToStory(story : Story){
+    if(!story.reports){
+      story.reports = new Array<string>();
+    }
+    story.reports.push(this.auth.uid);
+    if(story.reports.length === 10){
+      story.status = 3;
+    }
+
+    if(typeof story.mark === "undefined"){
+      delete story.mark;
+    }
+
+    this.storyService.updateStory(story);
+  }
+
+  /**
+   * Déconnection de l'utilisateur identifié
+   */
+  doLogout() {
+    this.afAuth.auth.signOut().then(() => {
+      this.utils.showToast('Vous êtes désormais déconnecté');
+      this.navCtrl.setRoot(LoginPage);
+    }).catch(err => this.utils.showToast(err.message));
   }
 
 

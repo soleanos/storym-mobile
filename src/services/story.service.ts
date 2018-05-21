@@ -16,10 +16,14 @@ export class StoryService {
 
   stories: Observable<any[]>;
   story: Observable<Story>;
+  report: Observable<String>;
+  reports: Observable<any[]>;
 
   private storyCollection: AngularFirestoreCollection<Story>;
+  private reportCollection: AngularFirestoreCollection<String>;
   private storyDoc: AngularFirestoreDocument<Story>;
-
+  private reportDoc: AngularFirestoreDocument<string>;
+  
   constructor(
     private messageService: MessageService,
     private db: AngularFirestore
@@ -33,26 +37,6 @@ export class StoryService {
   getStoryDoc(id: string): AngularFirestoreDocument<Story> {
     return this.db.doc<Story>('Story/' + id);
   }
-
-
-  //////// Get methods //////////
-
-  /** Get all stories  */
-  // getStories (): Observable<any[]> {
-  //   this.storyCollection = this.db.collection<Story>('Story');
-  //   this.stories = this.storyCollection.snapshotChanges().map(actions => {
-  //     return actions.map(a => {
-  //       const data = a.payload.doc.data() as Story;
-  //         data.id = a.payload.doc.id;
-  //       return data;
-  //     });
-  //   });
-  //   return this.stories
-  //     .pipe(
-  //       tap(stories => this.log(`fetched stories`)),
-  //       catchError(this.handleError('getStories', []))
-  //     );
-  // }
 
    /** Get all stories of specified id  */
    getStories (): Observable<any[]> {

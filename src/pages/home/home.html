@@ -7,8 +7,14 @@
       </button>
     </ion-buttons>
     <ion-buttons start>
-        <button ion-button icon-only color="primary" (click)="openFiltering()">
-              <ion-icon name="arrow-down"></ion-icon>
+        <button *ngIf="!filterOpened" ion-button icon-only color="primary" (click)="openFiltering()">
+              <ion-icon name="arrow-round-down"></ion-icon>
+        </button>
+        <button *ngIf="filterOpened" ion-button icon-only color="primary" (click)="openFiltering()">
+          <ion-icon name="arrow-round-up"></ion-icon>
+        </button>
+        <button ion-button icon-only color="primary" >
+          <ion-icon name="basket"></ion-icon>
         </button>
       </ion-buttons>
   </ion-toolbar>
@@ -66,19 +72,18 @@
 
     <hr>
 
-
-    <ion-item *ngIf="!story.mark" >
-      <button color="dark" class = "button" ion-button (click)="read(story.id)">Lire</button>  
+    <ion-item style = "text-align:center" *ngIf="!story.mark" >
+      <button color="dark" class = "button-inline" ion-button (click)="read(story.id)">Lire</button>  
+      <button *ngIf="checkIfAlreadyReported(story)" color="danger" class = "button-inline" ion-button (click)="signaler(story)">Signaler</button>  
     </ion-item>
 
     <ion-item style = "text-align:center" *ngIf="story.mark" >
       <button color="dark" class = "button-inline" ion-button (click)="continue(story)">Continuer</button>  
       <button color="dark" class = "button-inline" ion-button (click)="reload(story.id)">Recommencer</button>  
+      <button *ngIf="checkIfAlreadyReported(story)" style = "margin-top:10px;"  color="danger" class = "button" ion-button (click)="signaler(story)">Signaler</button> 
+      
     </ion-item>
     <hr>
-    <ion-item >
-      <button color="danger" class = "button" ion-button (click)="signaler()">Signaler</button>  
-    </ion-item>
 
   </ion-card>
   

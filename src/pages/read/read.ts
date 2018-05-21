@@ -8,7 +8,9 @@ import { Mark } from '../../model/Mark';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
-
+import { ViewChild } from '@angular/core';
+import { Content } from 'ionic-angular';
+import { AlertController } from 'ionic-angular';
 
 /**
  * Generated class for the ReadPage page.
@@ -29,7 +31,8 @@ export class ReadPage {
   slicesOfStory: Slice[];
   slice: Slice;
   choices: Choice[];
-
+  @ViewChild(Content) content: Content;
+  
   constructor(
     public navCtrl: NavController,
     private storyService: StoryService,
@@ -37,11 +40,18 @@ export class ReadPage {
     private sliceService: SliceService,
     private userService: UserService,
     private authService: AuthService,
+    private alertCtrl: AlertController
     ) {
       this.slicesOfStory = new Array<Slice>();
       this.choices = new Array<Choice>();
       this.slice = new Slice();
     }
+
+    async scrollTo(element:string) {
+    await this.delay(300);
+    let yOffset = document.getElementById(element).offsetTop;
+    this.content.scrollTo(0, yOffset, 4000)
+  }
 
   ngOnInit() {
     const id = this.navParams.get('id');
@@ -50,12 +60,16 @@ export class ReadPage {
     if(mark){
       this.fillMark(mark);
       this.slice = this.slicesOfStory[this.slicesOfStory.length-1]; 
+      this.scrollTo(this.slice.id);
     }else{
       this.getFirstSlice(id);
     }
     this.getStory(id);
     this.getSlices(id);
-    console.log(mark);
+  }
+
+   delay(ms: number) {
+      return new Promise( resolve => setTimeout(resolve, ms) );
   }
 
   /**
@@ -64,7 +78,6 @@ export class ReadPage {
    */
   fillMark(mark:Mark): void {
     this.slicesOfStory = mark.slices;
-    console.log(this.slicesOfStory);
   }
 
   /**
@@ -110,6 +123,8 @@ export class ReadPage {
     const nextSlice: Slice = this.getnextLinkedSlice(choice.nextSliceId);
     this.slicesOfStory.push(nextSlice);
     this.slice = nextSlice;
+   
+    this.scrollTo(nextSlice.id);
   }
 
   /**
@@ -122,7 +137,7 @@ export class ReadPage {
   }
   
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ReadPage');
+    // console.log('ionViewDidLoad ReadPage');
   }
 
   markPage(){
@@ -133,5 +148,29 @@ export class ReadPage {
       this.userService.addMark(auth.uid,this.story.id,mark)
     )
   }
+
+  presentConfirm() {
+    let alert = this.alertCtrl.create({
+      title: 'Signaler cette histoire',
+      message: 'Etes vous sur de vouloir signaler cette histoire ?',
+      buttons: [
+        {
+          text: 'gdfdgd',
+          role: 'cancel',
+          handler: () => {
+            console.log('Signalement annulé');
+          }
+        },
+        {
+          text: 'SIGNALER',
+          handler: () => {
+            console.log('Signalement ok ');
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
 
 }

@@ -97,14 +97,15 @@ export class UserService {
         return this.currentUser;
     }
 
-    setUserAccount(authData: any) {
+    setUserAccount(auth: any) {
+        const authData : any = auth.user;
         const providerData = authData.providerData; // [0];
         const userData: any = {
             id: authData.uid
-            // , email: authData.email
-            // , lastLogin: moment().format()
+            , email: auth.additionalUserInfo.profile.email
             , photoURL: authData.photoURL || 'http://simpleicon.com/wp-content/uploads/user1.png'
             , displayName: authData.displayName
+            , locale : auth.additionalUserInfo.profile.locale
         };
 
         const usr = this.getUser(authData.uid);
@@ -225,12 +226,8 @@ export class UserService {
 
     /** Get a story by ID  */
     deleteMark(idUser: string, storyId : string) {
-        this.getMarkCollection(idUser).doc(storyId).delete().then(function() {
-            this.utils.showToast("Votre marque page a été retiré")
-        }).catch(function(error) {
-            console.error("Erreur, votre marque page n'a pas pu être supprimé : ", error);
-        });
-    
+        this.getMarkCollection(idUser).doc(storyId).delete();
+        this.utils.showToast('Marque page retiré.');
     }
     
 
